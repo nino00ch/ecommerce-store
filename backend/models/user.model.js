@@ -3,18 +3,12 @@ import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema(
   {
-    name: { type: String, required: [true, " Name is required"] },
-    email: {
-      type: String,
-      required: [true, " Email is required"],
-      unique: true,
-      lowercase: true,
-      trim: true,
-    },
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
     password: {
       type: String,
-      required: [true, " Email is required"],
-      minLength: [6, " Password must be at least 6 characters"],
+      required: true,
+      minlength: [6, "password must be at least 6 characters long"],
     },
     cartItems: [
       {
@@ -25,21 +19,20 @@ const userSchema = new mongoose.Schema(
         product: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Product",
-          required: true,
         },
       },
     ],
     role: {
       type: String,
       enum: ["customer", "admin"],
-      default: "customer",
+      default: "customer", // each user can be admin
     },
-    //createdAt, updatedAt
   },
-  { timestamps: true }
+  {
+    timestamps: true, //add createdAt and updatedAt fields automatically
+  }
 );
 
-const User = mongoose.model("User", userSchema);
 //password bcrypt
 //pre-save hook to hash password
 userSchema.pre("save", async function (next) {
@@ -52,10 +45,12 @@ userSchema.pre("save", async function (next) {
     next(error);
   }
 });
+
 //jhonne 12345
 // 1234567 =>invalid credentials
 userSchema.methods.comparePassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
+const User = mongoose.model("User", userSchema);
 export default User;

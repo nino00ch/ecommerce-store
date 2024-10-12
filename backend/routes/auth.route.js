@@ -1,17 +1,17 @@
 import express from "express";
 import {
-  getUserByName,
   login,
   logout,
   signup,
+  refreshToken,
 } from "../controllers/auth.controller.js";
 
 const router = express.Router();
-//authentication
-router.get("/signup", signup);
-router.get("/login", login);
-router.get("/logout", logout);
-router.get("/get-user-by-name", getUserByName);
 
-// This will be the route for handling POST requests to the signup endpoint
+router.post("/signup", signup);
+router.post("/login", login);
+router.post("/logout", logout);
+router.post("/refresh-token", refreshToken);
+// router.get("/Profile", getProfile);
+
 export default router;
