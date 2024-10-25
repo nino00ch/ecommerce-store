@@ -79,7 +79,7 @@ const Hero = () => {
             </button>
         </div>
         <div className="right">
-                <img src={room} alt="" />
+                <img className="room" src={room} alt="" />
                 <div className="carousel-container">
                   <div className="carousel-content">
                       {/* Left Arrow */}
